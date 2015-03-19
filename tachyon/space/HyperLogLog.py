@@ -1,3 +1,4 @@
+from ..shared import BitBox
 import sys
 __author__ = 'Stefan Zapf'
 
@@ -11,14 +12,7 @@ class HyperLogLog(object):
 
     def add(self, item):
         h = hash(item)
-        binary = bin(h)
-
-        zeros = 0
-        for bit in reversed(binary):
-            if bit == "1":
-                break
-            zeros += 1
-
+        zeros = BitBox.CalcZeros(h)
         self.max_zeroes = max(self.max_zeroes, zeros)
 
     def compute(self):
