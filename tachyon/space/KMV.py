@@ -5,24 +5,28 @@ import sys
 
 class KMV(object):
     def __init__(self, k):
-        self._k = k
-        self._kSmallest = [float("inf") for x in range(k)]
+        self._k_smallest = [float("inf") for x in range(k)]
+        self._hash_size = hashlib.sha256().digest_size * 8
 
     def add(self, item):
-        h = hashlib.md5(item)
+        h = hashlib.sha256(item)
         n = int(h.hexdigest(), 16)
-        mv = max(self._kSmallest)
-        mi = self._kSmallest.index(mv)
+        if n in self._k_smallest:
+            return
 
-        if(n < mv):
-            self._kSmallest[mi] = n
+        max_val = max(self._k_smallest)
+        max_idx = self._k_smallest.index(max_val)
+
+        if n < max_val:
+            self._k_smallest[max_idx] = n
 
     def compute(self):
-        mv_frac = max(self._kSmallest) / float(2**128)
-        return (self._k - 1.) / mv_frac
+        mean_dist = max(self._k_smallest) / float(len(self._k_smallest) - 1)
+        return 2 ** self._hash_size / mean_dist
+
 
 if __name__ == "__main__":
-    kmv = KMV(3)
+    kmv = KMV(5)
     for arg in sys.argv[1:]:
         kmv.add(arg)
-    print kmv.compute()
+    print kmv.compute

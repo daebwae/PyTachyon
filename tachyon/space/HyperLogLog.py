@@ -1,5 +1,6 @@
 from ..shared import BitBox
 import sys
+
 __author__ = 'Stefan Zapf'
 
 
@@ -7,6 +8,7 @@ class HyperLogLog(object):
     """ Implementation of HyperLogLog
     currently in dev, just a basic implementation
     """
+
     def __init__(self):
         self.max_zeroes = 0
 
@@ -17,6 +19,7 @@ class HyperLogLog(object):
 
     def compute(self):
         return 2 ** (self.max_zeroes + 1)
+
 
 if __name__ == "__main__":
     hll = HyperLogLog()
